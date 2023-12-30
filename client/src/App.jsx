@@ -101,6 +101,19 @@ function App() {
     }
   };
 
+  // Automatic login
+  useEffect(() => {
+    if (!loggedIn) {
+      const credentials = { username: "mario.rossi@polito.it", password: "test" };
+      API.logIn(credentials)
+        .then((user) => {
+          setUser(user);
+          setLoggedIn(true);
+        })
+        .catch((err) => handleErrors(err));
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
