@@ -7,27 +7,89 @@ import NavHeader from './Navbar';
 import API from '../API';
 
 function MainLayout(props) {
+    // State for sorting order
+    const [orderBy, setOrderBy] = useState('title');
+    // State for search term
+    const [searchTerm, setSearchTerm] = useState('');
+    // State for sorting direction (asc or desc)
+    const [orderDirection, setOrderDirection] = useState('asc');
 
     const projects = props.projects;
 
+    // Function to handle sorting order change event
+    const handleOrderByChange = (event) => {
+        setOrderBy(event.target.value);
+    };
+
+    // Function to handle search term change event
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    // Function to handle sorting direction change event
+    const handleOrderDirectionChange = () => {
+        // Toggle between 'asc' and 'desc' order
+        setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
+    };
+
+    // Filter and sort projects based on states
+    const filteredAndSortedProjects = projects
+        .filter(project => project.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => {
+            // Compare values based on selected order and direction
+            const compareValue = (orderBy === 'title') ? a.name.localeCompare(b.name) : a.description.localeCompare(b.description);
+            // Multiply by 1 or -1 based on the order direction
+            return orderDirection === 'asc' ? compareValue : compareValue * -1;
+        });
+
     return (
         <>
+            {/* Navigation header component */}
             <NavHeader user={props.user} />
 
             <Container fluid>
                 <Row>
+                    {/* Sidebar */}
                     <Col md={3} className="bg-light sidebar">
                         <Nav defaultActiveKey="/" className="flex-column">
                             <Nav.Link eventKey="disabled" disabled>My Projects</Nav.Link>
                         </Nav>
                     </Col>
+                    {/* Main content area */}
                     <Col md={9} className="ml-sm-auto">
                         <h2>My projects</h2>
-                        {
-                            projects.map((project) =>
-                                <ProjectCard key={project.id} project={project} />
-                            )
-                        }
+
+                        {/* Search and sort row */}
+                        <Row>
+                            {/* Search field on the left */}
+                            <Col xs={6}>
+                                <div>
+                                    <label htmlFor="search">Search:</label>
+                                    <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
+                                </div>
+                            </Col>
+
+                            {/* Sorting field and button on the right */}
+                            <Col xs={6} className="text-right">
+                                <div>
+                                    <label htmlFor="orderBy">Order by:</label>
+                                    <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
+                                        <option value="title">Title</option>
+                                        <option value="description">Description</option>
+                                    </select>
+
+                                    {/* Button to change sorting direction */}
+                                    <button onClick={handleOrderDirectionChange}>
+                                        {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
+                                    </button>
+                                </div>
+                            </Col>
+                        </Row>
+
+                        {/* List of filtered and sorted projects */}
+                        {filteredAndSortedProjects.map((project) => (
+                            <ProjectCard key={project.id} project={project} />
+                        ))}
                     </Col>
                 </Row>
             </Container>
@@ -106,6 +168,9 @@ function ProjectDetailsLayout(props) {
 function QuestionsLayout(props) {
 
     const { id } = useParams();
+    const [orderBy, setOrderBy] = useState('title');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [orderDirection, setOrderDirection] = useState('asc'); 
 
     const navigate = useNavigate();
 
@@ -125,6 +190,24 @@ function QuestionsLayout(props) {
             name = p.name;
         }
     }
+    const handleOrderByChange = (event) => {
+        setOrderBy(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleOrderDirectionChange = () => {
+        setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
+    };
+
+    const filteredAndSortedQuestions= questions
+        .filter(question => question.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => {
+            const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : a.description.localeCompare(b.description);
+            return orderDirection === 'asc' ? compareValue : compareValue * -1;
+        });
 
     return (
         <>
@@ -146,8 +229,30 @@ function QuestionsLayout(props) {
                             Go Back
                         </Button>
                         <h2>{name + " - other users' questions:"}</h2>
+                        <Row>
+                            <Col xs={6}>
+                                <div>
+                                    <label htmlFor="search">Search:</label>
+                                    <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
+                                </div>
+                            </Col>
+                            <Col xs={6} className="text-right">
+                                <div>
+                                    <label htmlFor="orderBy">Order by:</label>
+                                    <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
+                                        <option value="title">Title</option>
+                                        <option value="description">Description</option>
+                                    </select>
+                                    
+                                    
+                                    <button onClick={handleOrderDirectionChange}>
+                                        {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
+                                    </button>
+                                </div>
+                            </Col>
+                        </Row>
                         {
-                            questions.map((question) =>
+                            filteredAndSortedQuestions.map((question) =>
                                 <QuestionCard key={question.id} question={question} />
                             )
                         }
@@ -161,6 +266,9 @@ function QuestionsLayout(props) {
 function MyQuestionsLayout(props) {
 
     const { id } = useParams();
+    const [orderBy, setOrderBy] = useState('title');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [orderDirection, setOrderDirection] = useState('asc'); 
 
     const navigate = useNavigate();
 
@@ -180,6 +288,24 @@ function MyQuestionsLayout(props) {
             name = p.name;
         }
     }
+    const handleOrderByChange = (event) => {
+        setOrderBy(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleOrderDirectionChange = () => {
+        setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
+    };
+
+    const filteredAndSortedQuestions= questions
+        .filter(question => question.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => {
+            const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : a.description.localeCompare(b.description);
+            return orderDirection === 'asc' ? compareValue : compareValue * -1;
+        });
 
     return (
         <>
@@ -201,8 +327,30 @@ function MyQuestionsLayout(props) {
                             Go Back
                         </Button>
                         <h2>{name + " - my questions:"}</h2>
+                        <Row>
+                            <Col xs={6}>
+                                <div>
+                                    <label htmlFor="search">Search:</label>
+                                    <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
+                                </div>
+                            </Col>
+                            <Col xs={6} className="text-right">
+                                <div>
+                                    <label htmlFor="orderBy">Order by:</label>
+                                    <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
+                                        <option value="title">Title</option>
+                                        <option value="description">Description</option>
+                                    </select>
+                                    
+                                    
+                                    <button onClick={handleOrderDirectionChange}>
+                                        {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
+                                    </button>
+                                </div>
+                            </Col>
+                        </Row>
                         {
-                            questions.map((question) =>
+                            filteredAndSortedQuestions.map((question) =>
                                 <QuestionCard key={question.id} question={question} />
                             )
                         }
