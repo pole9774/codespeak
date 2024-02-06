@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Row, Col, Button, Container, Nav, Card, Form, Modal } from 'react-bootstrap';
+import { Row, Col, Button, Container, Nav, Card, Form, Modal, ProgressBar } from 'react-bootstrap';
 import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
 
 import { LoginForm } from './Auth';
@@ -534,7 +534,14 @@ function QuestionForm(props) {
                 :
                 <>
                     {loading ?
-                        <h2>Waiting for AI response...</h2>
+                        <div className="d-flex flex-column align-items-center justify-content-center vh-100">
+                            <div style={{ marginBottom: '20px' }}>
+                                <h2>Waiting for AI response...</h2>
+                            </div>
+                            <div style={{ width: '50%', textAlign: 'center' }}>
+                                <ProgressBar animated now={100} className="mt-3" />
+                            </div>
+                        </div>
                         :
                         <Navigate replace to={"/questions/" + questionid} />
                     }
