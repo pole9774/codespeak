@@ -170,7 +170,7 @@ function QuestionsLayout(props) {
     const { id } = useParams();
     const [orderBy, setOrderBy] = useState('title');
     const [searchTerm, setSearchTerm] = useState('');
-    const [orderDirection, setOrderDirection] = useState('asc'); 
+    const [orderDirection, setOrderDirection] = useState('asc');
 
     const navigate = useNavigate();
 
@@ -202,7 +202,7 @@ function QuestionsLayout(props) {
         setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     };
 
-    const filteredAndSortedQuestions= questions
+    const filteredAndSortedQuestions = questions
         .filter(question => question.title.toLowerCase().includes(searchTerm.toLowerCase()))
         .sort((a, b) => {
             const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : a.description.localeCompare(b.description);
@@ -243,8 +243,8 @@ function QuestionsLayout(props) {
                                         <option value="title">Title</option>
                                         <option value="description">Description</option>
                                     </select>
-                                    
-                                    
+
+
                                     <button onClick={handleOrderDirectionChange}>
                                         {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
                                     </button>
@@ -268,7 +268,7 @@ function MyQuestionsLayout(props) {
     const { id } = useParams();
     const [orderBy, setOrderBy] = useState('title');
     const [searchTerm, setSearchTerm] = useState('');
-    const [orderDirection, setOrderDirection] = useState('asc'); 
+    const [orderDirection, setOrderDirection] = useState('asc');
 
     const navigate = useNavigate();
 
@@ -300,7 +300,7 @@ function MyQuestionsLayout(props) {
         setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
     };
 
-    const filteredAndSortedQuestions= questions
+    const filteredAndSortedQuestions = questions
         .filter(question => question.title.toLowerCase().includes(searchTerm.toLowerCase()))
         .sort((a, b) => {
             const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : a.description.localeCompare(b.description);
@@ -341,8 +341,8 @@ function MyQuestionsLayout(props) {
                                         <option value="title">Title</option>
                                         <option value="description">Description</option>
                                     </select>
-                                    
-                                    
+
+
                                     <button onClick={handleOrderDirectionChange}>
                                         {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
                                     </button>
@@ -393,14 +393,30 @@ function QuestionForm(props) {
     const [description, setDescription] = useState('');
     const [questionid, setQuestionid] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [showValidationError, setShowValidationError] = useState(false);
+    const [validationErrorMessage, setValidationErrorMessage] = useState("");
+
 
     const addQuestion = (e) => {
-        API.addQuestion(e)
-            .then((qid) => {
-                props.setQDirty(true);
-                setQuestionid(qid);
-            })
-            .catch((err) => handleErrors(err));
+        if (!title && !description) {
+            setValidationErrorMessage("Please fill in both Title and Description before submitting to AI.");
+        } else if (!title) {
+            setValidationErrorMessage("Please fill in the Title before submitting to AI.");
+        } else if (!description) {
+            setValidationErrorMessage("Please fill in the Description before submitting to AI.");
+        } else {
+            setShowValidationError(false);
+            API.addQuestion(e)
+                .then((qid) => {
+                    props.setQDirty(true);
+                    setQuestionid(qid);
+                })
+                .catch((err) => handleErrors(err));
+            return;
+        }
+
+        setShowValidationError(true);
+        setTimeout(() => setShowValidationError(false), 2000);
     }
 
     useEffect(() => {
@@ -492,6 +508,15 @@ function QuestionForm(props) {
                                             Confirm
                                         </Button>
                                     </Modal.Footer>
+                                </Modal>
+
+                                <Modal show={showValidationError} onHide={() => setShowValidationError(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Validation Error</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {validationErrorMessage}
+                                    </Modal.Body>
                                 </Modal>
 
                                 <Button variant="primary" onClick={() => {
@@ -643,7 +668,9 @@ function QuestionPage(props) {
                             question.userid == props.user.id ?
                                 <></>
                                 :
-                                <Button variant="primary">Propose solution</Button>
+                                <Link to={"/questions/" + qid + "/mysolution"}>
+                                    <Button variant="primary">Propose solution</Button>
+                                </Link>
                         }
                     </Col>
                 </Row>
@@ -730,6 +757,162 @@ function SolutionPage(props) {
     );
 }
 
+function SolutionForm(props) {
+
+    const { qid } = useParams();
+
+    const questions = props.questions;
+    const projects = props.projects;
+
+
+    let projectid = 0;
+    let projectname = "";
+    let questiontitle = "";
+    let questionuserid = 0;
+
+
+    const [description, setDescription] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [showValidationError, setShowValidationError] = useState(false);
+    const [validationErrorMessage, setValidationErrorMessage] = useState("");
+    const [solutiongiven, setSolutiongiven] = useState(0);
+
+
+    for (let q of questions) {
+        if (q.id == qid) {
+            questiontitle = q.title;
+            projectid = q.projectid;
+            questionuserid = q.userid;
+        }
+    }
+
+    for (let p of projects) {
+        if (p.id == projectid) {
+            projectname = p.name;
+        }
+    }
+
+
+    const addSolution = (e) => {
+
+        if (!description) {
+            setValidationErrorMessage("Please fill in the Description before submitting.");
+        } else {
+            setShowValidationError(false);
+            API.addSolution(e)
+                .then((sid) => {
+                    props.setSDirty(true);
+                    setSolutiongiven(1);
+                })
+                .catch((err) => handleErrors(err));
+            return;
+        }
+
+        setShowValidationError(true);
+        setTimeout(() => setShowValidationError(false), 2000);
+    }
+
+    const navigate = useNavigate();
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const handleGoBack = () => {
+        if (description) {
+            setShowConfirmation(true);
+        } else {
+            navigate("/questions/" + qid);
+        }
+    };
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+    };
+
+    const handleConfirmGoBack = () => {
+        navigate("/questions/" + qid);
+        handleCloseConfirmation();
+    };
+
+    return (
+        <>
+            {solutiongiven == 0 ?
+                <>
+                    <NavHeader user={props.user} />
+
+                    <Container fluid>
+                        <Row>
+                            <Col md={3} className="bg-light sidebar">
+                                <Nav defaultActiveKey="/" className="flex-column">
+                                    <Nav.Link as={Link} to="/">My Projects</Nav.Link>
+                                    <Nav.Link as={Link} to={"/projects/" + projectid}>{projectname}</Nav.Link>
+                                    <Nav.Link as={Link} to={"/projects/" + projectid + "/questions"}>Questions</Nav.Link>
+                                    <Nav.Link as={Link} to={"/questions/" + qid}>{questiontitle}</Nav.Link>
+                                    <Nav.Link eventKey="disabled" disabled>My solution</Nav.Link>
+                                </Nav>
+                            </Col>
+                            <Col md={9} className="ml-sm-auto">
+                                <Button variant="secondary" onClick={handleGoBack}>
+                                    Go Back
+                                </Button>
+                                <h2>Your solution:</h2>
+                                <Form>
+                                    <Form.Group controlId="formDescription">
+                                        <Form.Label>Description</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={3}
+                                            placeholder="Enter description"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Form>
+
+                                <Modal show={showConfirmation} onHide={handleCloseConfirmation}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Confirm Go Back</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        Are you sure you want to go back? Your changes will be lost.
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleCloseConfirmation}>
+                                            Cancel
+                                        </Button>
+                                        <Button variant="primary" onClick={handleConfirmGoBack}>
+                                            Confirm
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+
+                                <Modal show={showValidationError} onHide={() => setShowValidationError(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Validation Error</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {validationErrorMessage}
+                                    </Modal.Body>
+                                </Modal>
+
+                                <Button variant="primary" onClick={() => {
+                                    const solution = {
+                                        "text": description,
+                                        "questionid": Number(qid),
+                                        "userid": props.user.id
+                                    }
+                                    addSolution(solution);
+                                }}>Submit</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                </>
+                :
+                <Navigate replace to={"/questions/" + qid} />
+            }
+        </>
+    );
+}
+
 function LoginLayout(props) {
     return (
         <Row>
@@ -740,4 +923,4 @@ function LoginLayout(props) {
     );
 }
 
-export { MainLayout, ProjectDetailsLayout, QuestionForm, QuestionPage, QuestionsLayout, MyQuestionsLayout, SolutionPage, LoginLayout };
+export { MainLayout, ProjectDetailsLayout, QuestionForm, QuestionPage, QuestionsLayout, MyQuestionsLayout, SolutionPage, SolutionForm, LoginLayout };

@@ -77,7 +77,7 @@ exports.listSolutions = () => {
  */
 exports.createSolution = (solution) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO solutions (text, userid, questionid) VALUES(?, ?, ?, ?)';
+        const sql = 'INSERT INTO solutions (text, userid, questionid) VALUES(?, ?, ?)';
         db.run(sql, [solution.text, solution.userid, solution.questionid], function (err) {
             if (err) {
                 reject(err);
