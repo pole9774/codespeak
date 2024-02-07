@@ -77,8 +77,8 @@ exports.listSolutions = () => {
  */
 exports.createSolution = (solution) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO solutions (text, userid, questionid) VALUES(?, ?, ?)';
-        db.run(sql, [solution.text, solution.userid, solution.questionid], function (err) {
+        const sql = 'INSERT INTO solutions (text, userid, questionid, nlikes, ndislikes, liked) VALUES(?, ?, ?, ?, ?, ?)';
+        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked], function (err) {
             if (err) {
                 reject(err);
             }
@@ -86,3 +86,21 @@ exports.createSolution = (solution) => {
         });
     });
 };
+
+// This function retrieves a solution given its id.
+exports.getSolution = (id) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM solutions WHERE id=?';
+      db.get(sql, [id], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        if (row == undefined) {
+          resolve({ error: 'Solution not found.' });
+        } else {
+          const solution = Object.assign({}, row);
+          resolve(solution);
+        }
+      });
+    });
+  };

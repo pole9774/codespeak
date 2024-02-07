@@ -560,6 +560,8 @@ function SolutionCard(props) {
                 <Link to={`/solutions/${props.solution.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
+                <Button variant="primary">Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
+                <Button variant="primary">Dislike {"(" + props.solution.ndislikes + ")"}</Button>
             </Card.Body>
         </Card>
     );
@@ -712,6 +714,9 @@ function SolutionPage(props) {
             solution.text = s.text;
             solution.questionid = s.questionid;
             solution.userid = s.userid;
+            solution.nlikes = s.nlikes;
+            solution.ndislikes = s.ndislikes;
+            solution.liked = s.liked;
         }
     }
 
@@ -757,6 +762,8 @@ function SolutionPage(props) {
                         </Button>
                         <h2>{"Solution by user #" + solution.userid}</h2>
                         <p>{solution.text}</p>
+                        <Button variant="primary">Like {"(" + solution.nlikes + ")"}</Button>{' '}
+                        <Button variant="primary">Dislike {"(" + solution.ndislikes + ")"}</Button>
                     </Col>
                 </Row>
             </Container>

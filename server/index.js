@@ -173,7 +173,10 @@ app.post('/api/solutions',
   isLoggedIn,
   [
     check('text').isLength({min: 1, max:1560}),
-    check('questionid').default(0).isInt()
+    check('questionid').default(0).isInt(),
+    check('nlikes').default(0).isInt(),
+    check('ndislikes').default(0).isInt(),
+    check('liked').default(0).isInt()
   ],
   async (req, res) => {
     // Is there any validation error?
@@ -185,7 +188,10 @@ app.post('/api/solutions',
     const solution = {
       text: req.body.text,
       questionid: req.body.questionid,
-      userid: req.user.id  // user is overwritten with the id of the user that is doing the request and it is logged in
+      userid: req.user.id,  // user is overwritten with the id of the user that is doing the request and it is logged in
+      nlikes: req.body.nlikes,
+      ndislikes: req.body.ndislikes,
+      liked: req.body.liked
     };
 
     try {
@@ -193,6 +199,24 @@ app.post('/api/solutions',
       res.json(result);
     } catch (err) {
       res.status(503).json({ error: `Database error during the creation of new solution: ${err}` }); 
+    }
+  }
+);
+
+// 7. Retrieve a solution, given its "id"
+// GET /api/solutions/:id
+app.get('/api/solutions/:id',
+  isLoggedIn,
+  [ check('id').isInt({min: 1}) ],    // check: is the id a positive integer?
+  async (req, res) => {
+    try {
+      const result = await projectsDao.getSolution(req.params.id);
+      if (result.error)
+        res.status(404).json(result);
+      else
+        res.json(result);
+    } catch (err) {
+      res.status(500).end();
     }
   }
 );

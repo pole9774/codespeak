@@ -97,7 +97,10 @@ const getSolutions = async () => {
                 id: solution.id,
                 text: solution.text,
                 userid: solution.userid,
-                questionid: solution.questionid
+                questionid: solution.questionid,
+                nlikes: solution.nlikes,
+                ndislikes: solution.ndislikes,
+                liked: solution.liked
             }
             return clientSolution;
         })
