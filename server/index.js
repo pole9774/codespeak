@@ -251,7 +251,7 @@ app.put('/api/solutions/:id',
       userid: req.body.userid,
       questionid: req.body.questionid,
       nlikes: req.body.nlikes,
-      ndislikes: req.body.dislikes,
+      ndislikes: req.body.ndislikes,
       liked: req.body.liked
     };
 

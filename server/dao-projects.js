@@ -110,7 +110,7 @@ exports.updateSolution = (id, solution) => {
 
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE solutions SET text=?, userid=?, questionid=?, nlikes=?, ndislikes=?, liked=? WHERE id=?';
-        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked], function (err) {
+        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked, solution.id], function (err) {
             if (err) {
                 reject(err);
             }
