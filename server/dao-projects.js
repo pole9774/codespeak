@@ -90,17 +90,35 @@ exports.createSolution = (solution) => {
 // This function retrieves a solution given its id.
 exports.getSolution = (id) => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM solutions WHERE id=?';
-      db.get(sql, [id], (err, row) => {
-        if (err) {
-          reject(err);
-        }
-        if (row == undefined) {
-          resolve({ error: 'Solution not found.' });
-        } else {
-          const solution = Object.assign({}, row);
-          resolve(solution);
-        }
-      });
+        const sql = 'SELECT * FROM solutions WHERE id=?';
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            if (row == undefined) {
+                resolve({ error: 'Solution not found.' });
+            } else {
+                const solution = Object.assign({}, row);
+                resolve(solution);
+            }
+        });
     });
-  };
+};
+
+// This function updates an existing solution given its id and the new properties.
+exports.updateSolution = (id, solution) => {
+
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE solutions SET text=?, userid=?, questionid=?, nlikes=?, ndislikes=?, liked=? WHERE id=?';
+        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked], function (err) {
+            if (err) {
+                reject(err);
+            }
+            if (this.changes !== 1) {
+                resolve({ error: 'No solution was updated.' });
+            } else {
+                resolve(id);
+            }
+        });
+    });
+};

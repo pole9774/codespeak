@@ -14,8 +14,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
-    credentials: true,
+  origin: 'http://localhost:5173',
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -23,41 +23,41 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 passport.use(new LocalStrategy(async function verify(username, password, callback) {
-    const user = await userDao.getUser(username, password)
-    if (!user)
-        return callback(null, false, 'Incorrect username or password');
+  const user = await userDao.getUser(username, password)
+  if (!user)
+    return callback(null, false, 'Incorrect username or password');
 
-    return callback(null, user);
+  return callback(null, user);
 }));
 
 passport.serializeUser(function (user, callback) {
-    callback(null, user);
+  callback(null, user);
 });
 
 passport.deserializeUser(function (user, callback) {
-    return callback(null, user);
+  return callback(null, user);
 });
 
 const session = require('express-session');
 
 app.use(session({
-    secret: "shhhhh... it's a secret!",
-    resave: false,
-    saveUninitialized: false,
+  secret: "shhhhh... it's a secret!",
+  resave: false,
+  saveUninitialized: false,
 }));
 app.use(passport.authenticate('session'));
 
 
 const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ error: 'Not authorized' });
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.status(401).json({ error: 'Not authorized' });
 }
 
 
 const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
-    return `${location}[${param}]: ${msg}`;
+  return `${location}[${param}]: ${msg}`;
 };
 
 
@@ -66,37 +66,37 @@ const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
 // POST /api/sessions 
 // This route is used for performing login.
 app.post('/api/sessions', function (req, res, next) {
-    passport.authenticate('local', (err, user, info) => {
-        if (err)
-            return next(err);
-        if (!user) {
-            return res.status(401).json({ error: info });
-        }
-        req.login(user, (err) => {
-            if (err)
-                return next(err);
+  passport.authenticate('local', (err, user, info) => {
+    if (err)
+      return next(err);
+    if (!user) {
+      return res.status(401).json({ error: info });
+    }
+    req.login(user, (err) => {
+      if (err)
+        return next(err);
 
-            return res.json(req.user);
-        });
-    })(req, res, next);
+      return res.json(req.user);
+    });
+  })(req, res, next);
 });
 
 // GET /api/sessions/current
 // This route checks whether the user is logged in or not.
 app.get('/api/sessions/current', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.status(200).json(req.user);
-    }
-    else
-        res.status(401).json({ error: 'Not authenticated' });
+  if (req.isAuthenticated()) {
+    res.status(200).json(req.user);
+  }
+  else
+    res.status(401).json({ error: 'Not authenticated' });
 });
 
 // DELETE /api/sessions/current
 // This route is used for loggin out the current user.
 app.delete('/api/sessions/current', (req, res) => {
-    req.logout(() => {
-        res.status(200).json({});
-    });
+  req.logout(() => {
+    res.status(200).json({});
+  });
 });
 
 
@@ -105,23 +105,23 @@ app.delete('/api/sessions/current', (req, res) => {
 // 1. Retrieve the list of all projects.
 // GET /api/projects
 app.get('/api/projects',
-    isLoggedIn,
-    (req, res) => {
-        projectsDao.listProjects()
-            .then(projects => res.json(projects))
-            .catch((err) => res.status(500).json(err));
-    }
+  isLoggedIn,
+  (req, res) => {
+    projectsDao.listProjects()
+      .then(projects => res.json(projects))
+      .catch((err) => res.status(500).json(err));
+  }
 );
 
 // 2. Retrieve the list of all questions.
 // GET /api/questions
 app.get('/api/questions',
-    isLoggedIn,
-    (req, res) => {
-        projectsDao.listQuestions()
-            .then(questions => res.json(questions))
-            .catch((err) => res.status(500).json(err));
-    }
+  isLoggedIn,
+  (req, res) => {
+    projectsDao.listQuestions()
+      .then(questions => res.json(questions))
+      .catch((err) => res.status(500).json(err));
+  }
 );
 
 // 3. Create a new question, by providing all relevant information.
@@ -129,8 +129,8 @@ app.get('/api/questions',
 app.post('/api/questions',
   isLoggedIn,
   [
-    check('title').isLength({min: 1, max:160}),
-    check('description').isLength({min: 1, max:560}),
+    check('title').isLength({ min: 1, max: 160 }),
+    check('description').isLength({ min: 1, max: 560 }),
     check('projectid').default(0).isInt()
   ],
   async (req, res) => {
@@ -151,7 +151,7 @@ app.post('/api/questions',
       const result = await projectsDao.createQuestion(question); // NOTE: createQuestion returns the id of the new created object
       res.json(result);
     } catch (err) {
-      res.status(503).json({ error: `Database error during the creation of new question: ${err}` }); 
+      res.status(503).json({ error: `Database error during the creation of new question: ${err}` });
     }
   }
 );
@@ -159,12 +159,12 @@ app.post('/api/questions',
 // 4. Retrieve the list of all solutions.
 // GET /api/solutions
 app.get('/api/solutions',
-    isLoggedIn,
-    (req, res) => {
-        projectsDao.listSolutions()
-            .then(solutions => res.json(solutions))
-            .catch((err) => res.status(500).json(err));
-    }
+  isLoggedIn,
+  (req, res) => {
+    projectsDao.listSolutions()
+      .then(solutions => res.json(solutions))
+      .catch((err) => res.status(500).json(err));
+  }
 );
 
 // 5. Create a new solution, by providing all relevant information.
@@ -172,7 +172,7 @@ app.get('/api/solutions',
 app.post('/api/solutions',
   isLoggedIn,
   [
-    check('text').isLength({min: 1, max:1560}),
+    check('text').isLength({ min: 1, max: 1560 }),
     check('questionid').default(0).isInt(),
     check('nlikes').default(0).isInt(),
     check('ndislikes').default(0).isInt(),
@@ -198,7 +198,7 @@ app.post('/api/solutions',
       const result = await projectsDao.createSolution(solution); // NOTE: createSolution returns the id of the new created object
       res.json(result);
     } catch (err) {
-      res.status(503).json({ error: `Database error during the creation of new solution: ${err}` }); 
+      res.status(503).json({ error: `Database error during the creation of new solution: ${err}` });
     }
   }
 );
@@ -207,7 +207,7 @@ app.post('/api/solutions',
 // GET /api/solutions/:id
 app.get('/api/solutions/:id',
   isLoggedIn,
-  [ check('id').isInt({min: 1}) ],    // check: is the id a positive integer?
+  [check('id').isInt({ min: 1 })],    // check: is the id a positive integer?
   async (req, res) => {
     try {
       const result = await projectsDao.getSolution(req.params.id);
@@ -217,6 +217,52 @@ app.get('/api/solutions/:id',
         res.json(result);
     } catch (err) {
       res.status(500).end();
+    }
+  }
+);
+
+// 8. Update an existing solution, by providing all the relevant information
+// PUT /api/solutions/<id>
+app.put('/api/solutions/:id',
+  isLoggedIn,
+  [
+    check('id').isInt(),
+    check('text').isLength({ min: 1, max: 560 }),
+    check('userid').isInt(),
+    check('questionid').isInt(),
+    check('nlikes').isInt(),
+    check('ndislikes').isInt(),
+    check('liked').default(0).isInt({ min: 0, max: 2 })
+  ],
+  async (req, res) => {
+    // Is there any validation error?
+    const errors = validationResult(req).formatWith(errorFormatter); // format error message
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ error: errors.array().join(", ") }); // error message is a single string with all error joined together
+    }
+    // Is the id in the body equal to the id in the url?
+    if (req.body.id !== Number(req.params.id)) {
+      return res.status(422).json({ error: 'URL and body id mismatch' });
+    }
+
+    const solution = {
+      id: req.body.id,
+      text: req.body.text,
+      userid: req.body.userid,
+      questionid: req.body.questionid,
+      nlikes: req.body.nlikes,
+      ndislikes: req.body.dislikes,
+      liked: req.body.liked
+    };
+
+    try {
+      const result = await projectsDao.updateSolution(solution.id, solution);
+      if (result.error)
+        res.status(404).json(result);
+      else
+        res.json(result);
+    } catch (err) {
+      res.status(503).json({ error: `Database error during the update of solution ${req.params.id}: ${err}` });
     }
   }
 );

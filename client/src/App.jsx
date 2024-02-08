@@ -121,10 +121,10 @@ function App() {
         <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
         <Route path="/projects/:id" element={<ProjectDetailsLayout projects={projects} user={user} />} />
         <Route path="/projects/:id/make-question" element={<QuestionForm projects={projects} user={user} setQDirty={setQDirty} />} />
-        <Route path="/questions/:qid" element={<QuestionPage projects={projects} questions={questions} solutions={solutions} user={user} />} />
+        <Route path="/questions/:qid" element={<QuestionPage projects={projects} questions={questions} solutions={solutions} user={user} setSDirty={setSDirty} />} />
         <Route path="/projects/:id/questions" element={<QuestionsLayout projects={projects} questions={questions} user={user} />} />
         <Route path="/projects/:id/myquestions" element={<MyQuestionsLayout projects={projects} questions={questions} user={user} />} />
-        <Route path="/solutions/:sid" element={<SolutionPage projects={projects} questions={questions} solutions={solutions} user={user} />} />
+        <Route path="/solutions/:sid" element={<SolutionPage projects={projects} questions={questions} solutions={solutions} user={user} setSDirty={setSDirty} />} />
         <Route path="/questions/:qid/mysolution" element={<SolutionForm projects={projects} questions={questions} user={user} setSDirty={setSDirty} />} />
       </Routes>
     </BrowserRouter>

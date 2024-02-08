@@ -560,8 +560,41 @@ function SolutionCard(props) {
                 <Link to={`/solutions/${props.solution.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
-                <Button variant="primary">Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
-                <Button variant="primary">Dislike {"(" + props.solution.ndislikes + ")"}</Button>
+                {
+                    props.solution.liked == 1 ?
+                        <>
+                            <Button variant="primary" onClick={() => {
+                                props.solution.liked = 0;
+                            }}>Like {"(" + (props.solution.nlikes + 1) + ")"}</Button>{' '}
+                            <Button variant="primary" onClick={() => {
+                                props.solution.liked = 2;
+                            }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
+                        </>
+                        :
+                        <>
+                            {
+                                props.solution.liked == 2 ?
+                                    <>
+                                        <Button variant="primary" onClick={() => {
+                                            props.solution.liked = 1;
+                                        }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
+                                        <Button variant="primary" onClick={() => {
+                                            props.solution.liked = 0;
+                                        }}>Dislike {"(" + (props.solution.ndislikes + 1) + ")"}</Button>
+                                    </>
+                                    :
+                                    <>
+                                        <Button variant="primary" onClick={() => {
+                                            props.solution.liked = 1;
+                                        }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
+                                        <Button variant="primary" onClick={() => {
+                                            props.solution.liked = 2;
+                                        }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
+                                    </>
+                            }
+                        </>
+                }
+
             </Card.Body>
         </Card>
     );
@@ -625,6 +658,12 @@ function QuestionPage(props) {
         }
     }
 
+    const updateSolution = (solution) => {
+        API.updateSolution(solution)
+            .then(() => { props.setSDirty(true); })
+            .catch(e => handleErrors(e));
+    }
+
     return (
         <>
             <NavHeader user={props.user} />
@@ -670,7 +709,7 @@ function QuestionPage(props) {
                         <h4>{"There are " + usersolutions.length + " possible solutions from other users:"}</h4>
                         {
                             usersolutions.map((solution) =>
-                                <SolutionCard key={solution.id} solution={solution} />
+                                <SolutionCard key={solution.id} solution={solution} updateSolution={updateSolution} />
                             )
                         }
                         {

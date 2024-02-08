@@ -124,6 +124,22 @@ function addSolution(solution) {
 }
 
 /**
+ * This function wants a solution object as parameter. If the solutionId exists, it updates the solution in the server side.
+ */
+function updateSolution(solution) {
+    return getJson(
+        fetch(SERVER_URL + "solutions/" + solution.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(solution)
+        })
+    )
+}
+
+/**
  * This function wants username and password inside a "credentials" object.
  * It executes the log-in.
  */
@@ -162,5 +178,5 @@ const logOut = async () => {
     )
 }
 
-const API = { logIn, getUserInfo, logOut, getProjects, getQuestions, addQuestion, getSolutions, addSolution };
+const API = { logIn, getUserInfo, logOut, getProjects, getQuestions, addQuestion, getSolutions, addSolution, updateSolution };
 export default API;
