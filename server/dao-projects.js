@@ -44,8 +44,8 @@ exports.listQuestions = () => {
  */
 exports.createQuestion = (question) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO questions (title, description, userid, projectid) VALUES(?, ?, ?, ?)';
-        db.run(sql, [question.title, question.description, question.userid, question.projectid], function (err) {
+        const sql = 'INSERT INTO questions (title, description, userid, projectid, date) VALUES(?, ?, ?, ?, ?)';
+        db.run(sql, [question.title, question.description, question.userid, question.projectid, question.date], function (err) {
             if (err) {
                 reject(err);
             }
@@ -77,8 +77,8 @@ exports.listSolutions = () => {
  */
 exports.createSolution = (solution) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO solutions (text, userid, questionid, nlikes, ndislikes, liked) VALUES(?, ?, ?, ?, ?, ?)';
-        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked], function (err) {
+        const sql = 'INSERT INTO solutions (text, userid, questionid, nlikes, ndislikes, liked, date) VALUES(?, ?, ?, ?, ?, ?, ?)';
+        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked, solution.date], function (err) {
             if (err) {
                 reject(err);
             }
@@ -109,8 +109,8 @@ exports.getSolution = (id) => {
 exports.updateSolution = (id, solution) => {
 
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE solutions SET text=?, userid=?, questionid=?, nlikes=?, ndislikes=?, liked=? WHERE id=?';
-        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked, solution.id], function (err) {
+        const sql = 'UPDATE solutions SET text=?, userid=?, questionid=?, nlikes=?, ndislikes=?, liked=?, date=? WHERE id=?';
+        db.run(sql, [solution.text, solution.userid, solution.questionid, solution.nlikes, solution.ndislikes, solution.liked, solution.date, solution.id], function (err) {
             if (err) {
                 reject(err);
             }

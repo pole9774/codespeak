@@ -104,6 +104,7 @@ function ProjectCard(props) {
             <Card.Body>
                 <Card.Title>{props.project.name}</Card.Title>
                 <Card.Text>{props.project.description}</Card.Text>
+                <Card.Text>{"Date: " + props.project.date}</Card.Text>
                 <Link to={`/projects/${props.project.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
@@ -121,11 +122,13 @@ function ProjectDetailsLayout(props) {
 
     let name = "";
     let description = "";
+    let date = "";
 
     for (let project of projects) {
         if (project.id == id) {
             name = project.name;
             description = project.description;
+            date = project.date;
         }
     }
 
@@ -149,6 +152,7 @@ function ProjectDetailsLayout(props) {
                         </Button>
                         <h2>{name}</h2>
                         <p>{description}</p>
+                        <p>{"Date: " + date}</p>
                         <Link to={"/projects/" + id + "/make-question"}>
                             <Button variant="primary">Make a question</Button>
                         </Link>
@@ -368,6 +372,7 @@ function QuestionCard(props) {
             <Card.Body>
                 <Card.Title>{props.question.title}</Card.Title>
                 <Card.Text>{props.question.description}</Card.Text>
+                <Card.Text>{"Date: " + props.question.date}</Card.Text>
                 <Link to={`/questions/${props.question.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
@@ -557,6 +562,7 @@ function SolutionCard(props) {
             <Card.Body>
                 <Card.Title>{"Solution by user #" + props.solution.userid}</Card.Title>
                 <Card.Text>{props.solution.text}</Card.Text>
+                <Card.Text>{"Date:" + props.solution.date}</Card.Text>
                 <Link to={`/solutions/${props.solution.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
@@ -635,7 +641,8 @@ function QuestionPage(props) {
         title: "",
         description: "",
         projectid: 0,
-        userid: 0
+        userid: 0,
+        date: ""
     };
 
     for (let q of questions) {
@@ -644,6 +651,7 @@ function QuestionPage(props) {
             question.description = q.description;
             question.projectid = q.projectid;
             question.userid = q.userid;
+            question.date = q.date;
         }
     }
 
@@ -706,6 +714,7 @@ function QuestionPage(props) {
                         }
                         <h2>{question.title}</h2>
                         <p>{question.description}</p>
+                        <p>{"Date: " + question.date}</p>
                         <h4>{"The AI has found " + aisolutions.length + " possible solutions:"}</h4>
                         {
                             aisolutions.map((solution) =>
@@ -755,7 +764,8 @@ function SolutionPage(props) {
         userid: 0,
         nlikes: 0,
         ndislikes: 0,
-        liked: 0
+        liked: 0,
+        date: ""
     };
 
     for (let s of solutions) {
@@ -766,6 +776,7 @@ function SolutionPage(props) {
             solution.nlikes = s.nlikes;
             solution.ndislikes = s.ndislikes;
             solution.liked = s.liked;
+            solution.date = s.date;
         }
     }
 
@@ -817,6 +828,7 @@ function SolutionPage(props) {
                         </Button>
                         <h2>{"Solution by user #" + solution.userid}</h2>
                         <p>{solution.text}</p>
+                        <p>{"Date" + solution.date}</p>
                         {
                             solution.liked == 1 ?
                                 <>

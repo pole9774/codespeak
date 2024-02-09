@@ -4,6 +4,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 
+const dayjs = require("dayjs");
+
 const { check, validationResult, } = require('express-validator');
 
 const projectsDao = require('./dao-projects');
@@ -59,6 +61,11 @@ const isLoggedIn = (req, res, next) => {
 const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
   return `${location}[${param}]: ${msg}`;
 };
+
+
+const formatDate = (dayJsDate, format) => {
+  return dayJsDate ? dayJsDate.format(format) : '';
+}
 
 
 /*** Users APIs ***/
@@ -144,7 +151,8 @@ app.post('/api/questions',
       title: req.body.title,
       description: req.body.description,
       projectid: req.body.projectid,
-      userid: req.user.id  // user is overwritten with the id of the user that is doing the request and it is logged in
+      userid: req.user.id,  // user is overwritten with the id of the user that is doing the request and it is logged in
+      date: formatDate(dayjs(), 'MMMM D, YYYY')
     };
 
     try {
@@ -191,7 +199,8 @@ app.post('/api/solutions',
       userid: req.user.id,  // user is overwritten with the id of the user that is doing the request and it is logged in
       nlikes: req.body.nlikes,
       ndislikes: req.body.ndislikes,
-      liked: req.body.liked
+      liked: req.body.liked,
+      date: formatDate(dayjs(), 'MMMM D, YYYY')
     };
 
     try {
@@ -252,7 +261,8 @@ app.put('/api/solutions/:id',
       questionid: req.body.questionid,
       nlikes: req.body.nlikes,
       ndislikes: req.body.ndislikes,
-      liked: req.body.liked
+      liked: req.body.liked,
+      date: formatDate(dayjs(), 'MMMM D, YYYY')
     };
 
     try {

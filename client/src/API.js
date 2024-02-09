@@ -42,7 +42,8 @@ const getProjects = async () => {
             const clientProject = {
                 id: project.id,
                 name: project.name,
-                description: project.description
+                description: project.description,
+                date: project.date
             }
             return clientProject;
         })
@@ -62,7 +63,8 @@ const getQuestions = async () => {
                 title: question.title,
                 description: question.description,
                 userid: question.userid,
-                projectid: question.projectid
+                projectid: question.projectid,
+                date: question.date
             }
             return clientQuestion;
         })
@@ -100,7 +102,8 @@ const getSolutions = async () => {
                 questionid: solution.questionid,
                 nlikes: solution.nlikes,
                 ndislikes: solution.ndislikes,
-                liked: solution.liked
+                liked: solution.liked,
+                date: solution.date
             }
             return clientSolution;
         })
