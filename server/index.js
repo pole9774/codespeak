@@ -262,7 +262,7 @@ app.put('/api/solutions/:id',
       nlikes: req.body.nlikes,
       ndislikes: req.body.ndislikes,
       liked: req.body.liked,
-      date: formatDate(dayjs(), 'MMMM D, YYYY')
+      date: req.body.date
     };
 
     try {
