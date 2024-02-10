@@ -557,12 +557,20 @@ function QuestionForm(props) {
 
 function SolutionCard(props) {
 
+    const text = props.solution.text.split("\n");
+    let k = 0;
+
     return (
         <Card>
             <Card.Body>
                 <Card.Title>{"Solution by user #" + props.solution.userid}</Card.Title>
-                <Card.Text>{props.solution.text}</Card.Text>
-                <Card.Text>{"Date:" + props.solution.date}</Card.Text>
+                {
+                    text.map((s) => {
+                        k++;
+                        return (<Card.Text key={k}>{s}</Card.Text>);
+                    })
+                }
+                <Card.Text>{"Date: " + props.solution.date}</Card.Text>
                 <Link to={`/solutions/${props.solution.id}`}>
                     <Button variant="primary">Details</Button>
                 </Link>
@@ -614,11 +622,19 @@ function SolutionCard(props) {
 
 function AISolutionCard(props) {
 
+    const text = props.solution.text.split("\n");
+    let k = 0;
+
     return (
         <Card>
             <Card.Body>
                 <Card.Title>{"Solution by user #" + props.solution.userid}</Card.Title>
-                <Card.Text>{props.solution.text}</Card.Text>
+                {
+                    text.map((s) => {
+                        k++;
+                        return (<Card.Text key={k}>{s}</Card.Text>);
+                    })
+                }
             </Card.Body>
         </Card>
     );
@@ -671,6 +687,8 @@ function QuestionPage(props) {
             aisolutions.push(s);
         }
     }
+
+    usersolutions.sort((a, b) => b.nlikes - a.nlikes);
 
     const updateSolution = (solution) => {
         API.updateSolution(solution)

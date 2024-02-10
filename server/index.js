@@ -137,7 +137,7 @@ app.post('/api/questions',
   isLoggedIn,
   [
     check('title').isLength({ min: 1, max: 160 }),
-    check('description').isLength({ min: 1, max: 560 }),
+    check('description').isLength({ min: 1, max: 8191 }),
     check('projectid').default(0).isInt()
   ],
   async (req, res) => {
@@ -180,7 +180,7 @@ app.get('/api/solutions',
 app.post('/api/solutions',
   isLoggedIn,
   [
-    check('text').isLength({ min: 1, max: 1560 }),
+    check('text').isLength({ min: 1, max: 8191 }),
     check('questionid').default(0).isInt(),
     check('nlikes').default(0).isInt(),
     check('ndislikes').default(0).isInt(),
@@ -236,7 +236,7 @@ app.put('/api/solutions/:id',
   isLoggedIn,
   [
     check('id').isInt(),
-    check('text').isLength({ min: 1, max: 560 }),
+    check('text').isLength({ min: 1, max: 8191 }),
     check('userid').isInt(),
     check('questionid').isInt(),
     check('nlikes').isInt(),
