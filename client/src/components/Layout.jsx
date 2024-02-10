@@ -69,6 +69,7 @@ function MainLayout(props) {
                             <Col xs={6}>
                                 <div>
                                     <label htmlFor="search">Search:</label>
+                                    {" "}
                                     <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
                                 </div>
                             </Col>
@@ -77,11 +78,12 @@ function MainLayout(props) {
                             <Col xs={6} className="text-right">
                                 <div>
                                     <label htmlFor="orderBy">Order by:</label>
+                                    {" "}
                                     <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
                                         <option value="title">Title</option>
                                         <option value="description">Date</option>
                                     </select>
-
+                                    {" "}
                                     {/* Button to change sorting direction */}
                                     <button onClick={handleOrderDirectionChange}>
                                         {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
@@ -253,17 +255,20 @@ function QuestionsLayout(props) {
                             <Col xs={6}>
                                 <div>
                                     <label htmlFor="search">Search:</label>
+                                    {" "}
                                     <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
                                 </div>
                             </Col>
                             <Col xs={6} className="text-right">
                                 <div>
                                     <label htmlFor="orderBy">Order by:</label>
+                                    {" "}
                                     <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
                                         <option value="title">Title</option>
                                         <option value="description">Date</option>
                                     </select>
 
+                                    {" "}
 
                                     <button onClick={handleOrderDirectionChange}>
                                         {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
@@ -353,17 +358,20 @@ function MyQuestionsLayout(props) {
                             <Col xs={6}>
                                 <div>
                                     <label htmlFor="search">Search:</label>
+                                    {" "}
                                     <input type="text" id="search" onChange={handleSearchChange} value={searchTerm} />
                                 </div>
                             </Col>
                             <Col xs={6} className="text-right">
                                 <div>
                                     <label htmlFor="orderBy">Order by:</label>
+                                    {" "}
                                     <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
                                         <option value="title">Title</option>
                                         <option value="description">Description</option>
                                     </select>
 
+                                    {" "}
 
                                     <button onClick={handleOrderDirectionChange}>
                                         {orderDirection === 'asc' ? 'Ascending' : 'Descending'}
