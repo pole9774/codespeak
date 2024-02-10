@@ -257,7 +257,7 @@ function QuestionsLayout(props) {
                         </Row>
                         {
                             filteredAndSortedQuestions.map((question) =>
-                                <QuestionCard key={question.id} question={question} />
+                                <QuestionCard key={question.id} question={question} users={props.users} />
                             )
                         }
                     </Col>
@@ -355,7 +355,7 @@ function MyQuestionsLayout(props) {
                         </Row>
                         {
                             filteredAndSortedQuestions.map((question) =>
-                                <QuestionCard key={question.id} question={question} />
+                                <QuestionCard key={question.id} question={question} users={props.users} />
                             )
                         }
                     </Col>
@@ -367,10 +367,19 @@ function MyQuestionsLayout(props) {
 
 function QuestionCard(props) {
 
+    let username = "";
+
+    for (let u of props.users) {
+        if (u.id == props.question.userid) {
+            username = u.name;
+        }
+    }
+
     return (
         <Card>
             <Card.Body>
                 <Card.Title>{props.question.title}</Card.Title>
+                <Card.Text>{"Question by: " + username}</Card.Text>
                 <Card.Text>{props.question.description}</Card.Text>
                 <Card.Text>{"Date: " + props.question.date}</Card.Text>
                 <Link to={`/questions/${props.question.id}`}>
@@ -560,10 +569,18 @@ function SolutionCard(props) {
     const text = props.solution.text.split("\n");
     let k = 0;
 
+    let username = "";
+
+    for (let u of props.users) {
+        if (u.id == props.solution.userid) {
+            username = u.name;
+        }
+    }
+
     return (
         <Card>
             <Card.Body>
-                <Card.Title>{"Solution by user #" + props.solution.userid}</Card.Title>
+                <Card.Title>{"Solution by " + username}</Card.Title>
                 {
                     text.map((s) => {
                         k++;
@@ -627,10 +644,18 @@ function AISolutionCard(props) {
     const text = props.solution.text.split("\n");
     let k = 0;
 
+    let username = "";
+
+    for (let u of props.users) {
+        if (u.id == props.solution.userid) {
+            username = u.name;
+        }
+    }
+
     return (
         <Card>
             <Card.Body>
-                <Card.Title>{"Solution by user #" + props.solution.userid}</Card.Title>
+                <Card.Title>{"Solution by " + username}</Card.Title>
                 {
                     text.map((s) => {
                         k++;
@@ -670,6 +695,14 @@ function QuestionPage(props) {
             question.projectid = q.projectid;
             question.userid = q.userid;
             question.date = q.date;
+        }
+    }
+
+    let username = "";
+
+    for (let u of props.users) {
+        if (u.id == question.userid) {
+            username = u.name;
         }
     }
 
@@ -733,18 +766,19 @@ function QuestionPage(props) {
                                 </Button>
                         }
                         <h2>{question.title}</h2>
+                        <p>{"Question by: " + username}</p>
                         <p>{question.description}</p>
                         <p>{"Date: " + question.date}</p>
                         <h4>{"The AI has found " + aisolutions.length + " possible solutions:"}</h4>
                         {
                             aisolutions.map((solution) =>
-                                <AISolutionCard key={solution.id} solution={solution} />
+                                <AISolutionCard key={solution.id} solution={solution} users={props.users} />
                             )
                         }
                         <h4>{"There are " + usersolutions.length + " possible solutions from other users:"}</h4>
                         {
                             usersolutions.map((solution) =>
-                                <SolutionCard key={solution.id} solution={solution} updateSolution={updateSolution} />
+                                <SolutionCard key={solution.id} solution={solution} updateSolution={updateSolution} users={props.users} />
                             )
                         }
                         {

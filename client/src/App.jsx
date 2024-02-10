@@ -29,6 +29,14 @@ function App() {
 
   const [message, setMessage] = useState('');
 
+  const users = [
+    { id: 1, name: "Mario Rossi" },
+    { id: 2, name: "Paolo Bianchi" },
+    { id: 3, name: "Luca Verdi" },
+    { id: 4, name: "Alessio Gialli" },
+    { id: 5, name: "Alice Viola" }
+  ];
+
   // If an error occurs, the error message will be shown in a toast.
   const handleErrors = (err) => {
     let msg = '';
@@ -119,11 +127,11 @@ function App() {
       <Routes>
         <Route path="/" element={loggedIn ? <MainLayout projects={projects} user={user} /> : <Navigate replace to='/login' />} />
         <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
-        <Route path="/projects/:id" element={<ProjectDetailsLayout projects={projects} user={user} />} />
+        <Route path="/projects/:id" element={<ProjectDetailsLayout projects={projects} user={user} users={users} />} />
         <Route path="/projects/:id/make-question" element={<QuestionForm projects={projects} user={user} setQDirty={setQDirty} />} />
-        <Route path="/questions/:qid" element={<QuestionPage projects={projects} questions={questions} solutions={solutions} user={user} setSDirty={setSDirty} />} />
-        <Route path="/projects/:id/questions" element={<QuestionsLayout projects={projects} questions={questions} user={user} />} />
-        <Route path="/projects/:id/myquestions" element={<MyQuestionsLayout projects={projects} questions={questions} user={user} />} />
+        <Route path="/questions/:qid" element={<QuestionPage projects={projects} questions={questions} solutions={solutions} user={user} setSDirty={setSDirty} users={users} />} />
+        <Route path="/projects/:id/questions" element={<QuestionsLayout projects={projects} questions={questions} user={user} users={users} />} />
+        <Route path="/projects/:id/myquestions" element={<MyQuestionsLayout projects={projects} questions={questions} user={user} users={users} />} />
         <Route path="/solutions/:sid" element={<SolutionPage projects={projects} questions={questions} solutions={solutions} user={user} setSDirty={setSDirty} />} />
         <Route path="/questions/:qid/mysolution" element={<SolutionForm projects={projects} questions={questions} user={user} setSDirty={setSDirty} />} />
       </Routes>
