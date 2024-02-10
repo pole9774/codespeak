@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Row, Col, Button, Container, Nav, Card, Form, Modal, ProgressBar } from 'react-bootstrap';
 import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import { LoginForm } from './Auth';
 import NavHeader from './Navbar';
@@ -37,7 +38,10 @@ function MainLayout(props) {
         .filter(project => project.name.toLowerCase().includes(searchTerm.toLowerCase()))
         .sort((a, b) => {
             // Compare values based on selected order and direction
-            const compareValue = (orderBy === 'title') ? a.name.localeCompare(b.name) : a.description.localeCompare(b.description);
+            const date1 = dayjs(a.date, "MMMM D, YYYY");
+            const date2 = dayjs(b.date, "MMMM D, YYYY");
+            const compareDates = date1.isBefore(date2) ? -1 : 1;
+            const compareValue = (orderBy === 'title') ? a.name.localeCompare(b.name) : compareDates;
             // Multiply by 1 or -1 based on the order direction
             return orderDirection === 'asc' ? compareValue : compareValue * -1;
         });
@@ -75,7 +79,7 @@ function MainLayout(props) {
                                     <label htmlFor="orderBy">Order by:</label>
                                     <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
                                         <option value="title">Title</option>
-                                        <option value="description">Description</option>
+                                        <option value="description">Date</option>
                                     </select>
 
                                     {/* Button to change sorting direction */}
@@ -154,6 +158,7 @@ function ProjectDetailsLayout(props) {
                         }}>
                             Go Back
                         </Button>
+                        <h1> </h1>
                         <h2>{name}</h2>
                         <p>{description}</p>
                         <p>{"Date: " + date}</p>
@@ -215,7 +220,10 @@ function QuestionsLayout(props) {
     const filteredAndSortedQuestions = questions
         .filter(question => question.title.toLowerCase().includes(searchTerm.toLowerCase()))
         .sort((a, b) => {
-            const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : a.description.localeCompare(b.description);
+            const date1 = dayjs(a.date, "MMMM D, YYYY");
+            const date2 = dayjs(b.date, "MMMM D, YYYY");
+            const compareDates = date1.isBefore(date2) ? -1 : 1;
+            const compareValue = (orderBy === 'title') ? a.title.localeCompare(b.title) : compareDates;
             return orderDirection === 'asc' ? compareValue : compareValue * -1;
         });
 
@@ -239,6 +247,7 @@ function QuestionsLayout(props) {
                         }}>
                             Go Back
                         </Button>
+                        <h1> </h1>
                         <h2>{name + " - other users' questions:"}</h2>
                         <Row>
                             <Col xs={6}>
@@ -252,7 +261,7 @@ function QuestionsLayout(props) {
                                     <label htmlFor="orderBy">Order by:</label>
                                     <select id="orderBy" onChange={handleOrderByChange} value={orderBy}>
                                         <option value="title">Title</option>
-                                        <option value="description">Description</option>
+                                        <option value="description">Date</option>
                                     </select>
 
 
@@ -338,6 +347,7 @@ function MyQuestionsLayout(props) {
                         }}>
                             Go Back
                         </Button>
+                        <h1> </h1>
                         <h2>{name + " - my questions:"}</h2>
                         <Row>
                             <Col xs={6}>
@@ -491,11 +501,13 @@ function QuestionForm(props) {
                                 </Nav>
                             </Col>
                             <Col md={9} className="ml-sm-auto">
+                                <h1> </h1>
                                 <Button variant="secondary" onClick={handleGoBack}>
                                     Go Back
                                 </Button>
+                                <h1> </h1>
                                 <h2>{name}</h2>
-                                <h2>Your question:</h2>
+                                <h3>Your question:</h3>
                                 <Form>
                                     <Form.Group controlId="formTitle">
                                         <Form.Label>Title</Form.Label>
@@ -506,6 +518,7 @@ function QuestionForm(props) {
                                             onChange={(e) => setTitle(e.target.value)}
                                         />
                                     </Form.Group>
+                                    <h1> </h1>
                                     <Form.Group controlId="formDescription">
                                         <Form.Label>Description</Form.Label>
                                         <Form.Control
@@ -527,10 +540,10 @@ function QuestionForm(props) {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={handleCloseConfirmation}>
-                                            Cancel
+                                            No, remain on this page
                                         </Button>
                                         <Button variant="primary" onClick={handleConfirmGoBack}>
-                                            Confirm
+                                            Yes, go back
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
@@ -544,6 +557,7 @@ function QuestionForm(props) {
                                     </Modal.Body>
                                 </Modal>
 
+                                <h1> </h1>
                                 <Button variant="primary" onClick={() => {
                                     const question = {
                                         "title": title,
@@ -783,6 +797,7 @@ function QuestionPage(props) {
                                     Go Back
                                 </Button>
                         }
+                        <h1> </h1>
                         <h2>{question.title}</h2>
                         <p>{"Question by: " + username}</p>
                         <p>{question.description}</p>
@@ -807,6 +822,7 @@ function QuestionPage(props) {
                                     <Button variant="primary">Propose solution</Button>
                                 </Link>
                         }
+                        <h1> </h1>
                     </Col>
                 </Row>
             </Container>
@@ -1042,13 +1058,14 @@ function SolutionForm(props) {
                                 </Nav>
                             </Col>
                             <Col md={9} className="ml-sm-auto">
+                                <h1> </h1>
                                 <Button variant="secondary" onClick={handleGoBack}>
                                     Go Back
                                 </Button>
-                                <h2>Your solution:</h2>
+                                <h1> </h1>
+                                <h3>Your solution:</h3>
                                 <Form>
                                     <Form.Group controlId="formDescription">
-                                        <Form.Label>Description</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
@@ -1068,10 +1085,10 @@ function SolutionForm(props) {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={handleCloseConfirmation}>
-                                            Cancel
+                                            No, remain on this page
                                         </Button>
                                         <Button variant="primary" onClick={handleConfirmGoBack}>
-                                            Confirm
+                                            Yes, go back
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
@@ -1085,6 +1102,7 @@ function SolutionForm(props) {
                                     </Modal.Body>
                                 </Modal>
 
+                                <h1> </h1>
                                 <Button variant="primary" onClick={() => {
                                     const solution = {
                                         "text": description,
