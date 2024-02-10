@@ -589,64 +589,67 @@ function SolutionCard(props) {
     }
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>{"Solution by " + username}</Card.Title>
-                {
-                    text.map((s) => {
-                        k++;
-                        return (<Card.Text key={k}>{s}</Card.Text>);
-                    })
-                }
-                <Card.Text>{"Date: " + props.solution.date}</Card.Text>
-                {/*
+        <>
+            <Card>
+                <Card.Body>
+                    <Card.Title>{"Solution by " + username}</Card.Title>
+                    {
+                        text.map((s) => {
+                            k++;
+                            return (<Card.Text key={k}>{s}</Card.Text>);
+                        })
+                    }
+                    <Card.Text>{"Date: " + props.solution.date}</Card.Text>
+                    {/*
                     <Link to={`/solutions/${props.solution.id}`}>
                         <Button variant="primary">Details</Button>
                     </Link>
                 */}
-                {
-                    props.solution.liked == 1 ?
-                        <>
-                            <Button variant="outline-success" onClick={() => {
-                                props.solution.liked = 0;
-                                props.updateSolution(props.solution);
-                            }}>Like {"(" + (props.solution.nlikes + 1) + ")"}</Button>{' '}
-                            <Button variant="danger" onClick={() => {
-                                props.solution.liked = 2;
-                                props.updateSolution(props.solution);
-                            }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
-                        </>
-                        :
-                        <>
-                            {
-                                props.solution.liked == 2 ?
-                                    <>
-                                        <Button variant="success" onClick={() => {
-                                            props.solution.liked = 1;
-                                            props.updateSolution(props.solution);
-                                        }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
-                                        <Button variant="outline-danger" onClick={() => {
-                                            props.solution.liked = 0;
-                                            props.updateSolution(props.solution);
-                                        }}>Dislike {"(" + (props.solution.ndislikes + 1) + ")"}</Button>
-                                    </>
-                                    :
-                                    <>
-                                        <Button variant="success" onClick={() => {
-                                            props.solution.liked = 1;
-                                            props.updateSolution(props.solution);
-                                        }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
-                                        <Button variant="danger" onClick={() => {
-                                            props.solution.liked = 2;
-                                            props.updateSolution(props.solution);
-                                        }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
-                                    </>
-                            }
-                        </>
-                }
+                    {
+                        props.solution.liked == 1 ?
+                            <>
+                                <Button variant="outline-success" onClick={() => {
+                                    props.solution.liked = 0;
+                                    props.updateSolution(props.solution);
+                                }}>Like {"(" + (props.solution.nlikes + 1) + ")"}</Button>{' '}
+                                <Button variant="danger" onClick={() => {
+                                    props.solution.liked = 2;
+                                    props.updateSolution(props.solution);
+                                }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
+                            </>
+                            :
+                            <>
+                                {
+                                    props.solution.liked == 2 ?
+                                        <>
+                                            <Button variant="success" onClick={() => {
+                                                props.solution.liked = 1;
+                                                props.updateSolution(props.solution);
+                                            }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
+                                            <Button variant="outline-danger" onClick={() => {
+                                                props.solution.liked = 0;
+                                                props.updateSolution(props.solution);
+                                            }}>Dislike {"(" + (props.solution.ndislikes + 1) + ")"}</Button>
+                                        </>
+                                        :
+                                        <>
+                                            <Button variant="success" onClick={() => {
+                                                props.solution.liked = 1;
+                                                props.updateSolution(props.solution);
+                                            }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
+                                            <Button variant="danger" onClick={() => {
+                                                props.solution.liked = 2;
+                                                props.updateSolution(props.solution);
+                                            }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
+                                        </>
+                                }
+                            </>
+                    }
 
-            </Card.Body>
-        </Card>
+                </Card.Body>
+            </Card>
+            <h1> </h1>
+        </>
     );
 }
 
@@ -664,17 +667,20 @@ function AISolutionCard(props) {
     }
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>{"Solution by " + username}</Card.Title>
-                {
-                    text.map((s) => {
-                        k++;
-                        return (<Card.Text key={k}>{s}</Card.Text>);
-                    })
-                }
-            </Card.Body>
-        </Card>
+        <>
+            <Card>
+                <Card.Body>
+                    <Card.Title>{"Solution by " + username}</Card.Title>
+                    {
+                        text.map((s) => {
+                            k++;
+                            return (<Card.Text key={k}>{s}</Card.Text>);
+                        })
+                    }
+                </Card.Body>
+            </Card>
+            <h1> </h1>
+        </>
     );
 }
 
@@ -762,6 +768,7 @@ function QuestionPage(props) {
                         </Nav>
                     </Col>
                     <Col md={9} className="ml-sm-auto">
+                        <h1> </h1>
                         {
                             question.userid == props.user.id ?
                                 <Button variant="secondary" onClick={() => {
