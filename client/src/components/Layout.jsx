@@ -673,10 +673,17 @@ function AISolutionCard(props) {
     let k = 0;
 
     let username = "";
+    let questiontitle = "";
 
     for (let u of props.users) {
         if (u.id == props.solution.userid) {
             username = u.name;
+        }
+    }
+
+    for (let q of props.questions) {
+        if (q.id == props.solution.questionid) {
+            questiontitle = q.title;
         }
     }
 
@@ -685,6 +692,7 @@ function AISolutionCard(props) {
             <Card>
                 <Card.Body>
                     <Card.Title>{"Solution by " + username}</Card.Title>
+                    <Card.Text>{"About: " + questiontitle}</Card.Text>
                     {
                         text.map((s) => {
                             k++;
@@ -805,7 +813,7 @@ function QuestionPage(props) {
                         <h4>{"The AI has found " + aisolutions.length + " possible solutions:"}</h4>
                         {
                             aisolutions.map((solution) =>
-                                <AISolutionCard key={solution.id} solution={solution} users={props.users} />
+                                <AISolutionCard key={solution.id} solution={solution} users={props.users} questions={questions} />
                             )
                         }
                         <h4>{"There are " + usersolutions.length + " possible solutions from other users:"}</h4>
