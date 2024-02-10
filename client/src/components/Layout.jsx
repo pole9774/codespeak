@@ -100,16 +100,19 @@ function MainLayout(props) {
 function ProjectCard(props) {
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>{props.project.name}</Card.Title>
-                <Card.Text>{props.project.description}</Card.Text>
-                <Card.Text>{"Date: " + props.project.date}</Card.Text>
-                <Link to={`/projects/${props.project.id}`}>
-                    <Button variant="primary">Details</Button>
-                </Link>
-            </Card.Body>
-        </Card>
+        <>
+            <h1> </h1>
+            <Card>
+                <Card.Body>
+                    <Card.Title>{props.project.name}</Card.Title>
+                    <Card.Text>{props.project.description}</Card.Text>
+                    <Card.Text>{"Date: " + props.project.date}</Card.Text>
+                    <Link to={`/projects/${props.project.id}`}>
+                        <Button variant="primary">Details</Button>
+                    </Link>
+                </Card.Body>
+            </Card>
+        </>
     );
 }
 
@@ -145,6 +148,7 @@ function ProjectDetailsLayout(props) {
                         </Nav>
                     </Col>
                     <Col md={9} className="ml-sm-auto">
+                        <h1> </h1>
                         <Button variant="secondary" onClick={() => {
                             navigate("/");
                         }}>
@@ -156,9 +160,11 @@ function ProjectDetailsLayout(props) {
                         <Link to={"/projects/" + id + "/make-question"}>
                             <Button variant="primary">Make a question</Button>
                         </Link>
+                        {" "}
                         <Link to={"/projects/" + id + "/myquestions"}>
                             <Button variant="primary">My questions</Button>
                         </Link>
+                        {" "}
                         <Link to={"/projects/" + id + "/questions"}>
                             <Button variant="primary">Other users' questions</Button>
                         </Link>
@@ -227,6 +233,7 @@ function QuestionsLayout(props) {
                         </Nav>
                     </Col>
                     <Col md={9} className="ml-sm-auto">
+                        <h1> </h1>
                         <Button variant="secondary" onClick={() => {
                             navigate("/projects/" + id);
                         }}>
@@ -325,6 +332,7 @@ function MyQuestionsLayout(props) {
                         </Nav>
                     </Col>
                     <Col md={9} className="ml-sm-auto">
+                        <h1> </h1>
                         <Button variant="secondary" onClick={() => {
                             navigate("/projects/" + id);
                         }}>
@@ -376,17 +384,20 @@ function QuestionCard(props) {
     }
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>{props.question.title}</Card.Title>
-                <Card.Text>{"Question by: " + username}</Card.Text>
-                <Card.Text>{props.question.description}</Card.Text>
-                <Card.Text>{"Date: " + props.question.date}</Card.Text>
-                <Link to={`/questions/${props.question.id}`}>
-                    <Button variant="primary">Details</Button>
-                </Link>
-            </Card.Body>
-        </Card>
+        <>
+            <h1> </h1>
+            <Card>
+                <Card.Body>
+                    <Card.Title>{props.question.title}</Card.Title>
+                    <Card.Text>{"Question by: " + username}</Card.Text>
+                    <Card.Text>{props.question.description}</Card.Text>
+                    <Card.Text>{"Date: " + props.question.date}</Card.Text>
+                    <Link to={`/questions/${props.question.id}`}>
+                        <Button variant="primary">Details</Button>
+                    </Link>
+                </Card.Body>
+            </Card>
+        </>
     );
 }
 
