@@ -571,9 +571,11 @@ function SolutionCard(props) {
                     })
                 }
                 <Card.Text>{"Date: " + props.solution.date}</Card.Text>
-                <Link to={`/solutions/${props.solution.id}`}>
-                    <Button variant="primary">Details</Button>
-                </Link>
+                {/*
+                    <Link to={`/solutions/${props.solution.id}`}>
+                        <Button variant="primary">Details</Button>
+                    </Link>
+                */}
                 {
                     props.solution.liked == 1 ?
                         <>
