@@ -714,6 +714,24 @@ function AISolutionCard(props) {
     );
 }
 
+function countCorr(s1, s2) {
+    const w1 = s1.match(/\b\w+\b/g);
+    const w2 = s2.match(/\b\w+\b/g);
+    let res = 0;
+
+    w1.forEach(w => {
+        if (w2.includes(w)) {
+            res++;
+        }
+    });
+
+    return res;
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
 function QuestionPage(props) {
 
     const { qid } = useParams();
@@ -765,8 +783,10 @@ function QuestionPage(props) {
         if (s.questionid == qid && s.userid != question.userid) {
             usersolutions.push(s);
         }
-        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 3) {
-            aisolutions.push(s);
+        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 13) {
+            if (getRandomInt(20) < 2) {
+                aisolutions.push(s);
+            }
         }
     }
 
