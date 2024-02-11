@@ -630,11 +630,11 @@ function SolutionCard(props) {
                     {
                         props.solution.liked == 1 ?
                             <>
-                                <Button variant="outline-success" onClick={() => {
+                                <Button variant="success" onClick={() => {
                                     props.solution.liked = 0;
                                     props.updateSolution(props.solution);
                                 }}>Like {"(" + (props.solution.nlikes + 1) + ")"}</Button>{' '}
-                                <Button variant="danger" onClick={() => {
+                                <Button variant="outline-danger" onClick={() => {
                                     props.solution.liked = 2;
                                     props.updateSolution(props.solution);
                                 }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
@@ -644,22 +644,22 @@ function SolutionCard(props) {
                                 {
                                     props.solution.liked == 2 ?
                                         <>
-                                            <Button variant="success" onClick={() => {
+                                            <Button variant="outline-success" onClick={() => {
                                                 props.solution.liked = 1;
                                                 props.updateSolution(props.solution);
                                             }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
-                                            <Button variant="outline-danger" onClick={() => {
+                                            <Button variant="danger" onClick={() => {
                                                 props.solution.liked = 0;
                                                 props.updateSolution(props.solution);
                                             }}>Dislike {"(" + (props.solution.ndislikes + 1) + ")"}</Button>
                                         </>
                                         :
                                         <>
-                                            <Button variant="success" onClick={() => {
+                                            <Button variant="outline-success" onClick={() => {
                                                 props.solution.liked = 1;
                                                 props.updateSolution(props.solution);
                                             }}>Like {"(" + props.solution.nlikes + ")"}</Button>{' '}
-                                            <Button variant="danger" onClick={() => {
+                                            <Button variant="outline-danger" onClick={() => {
                                                 props.solution.liked = 2;
                                                 props.updateSolution(props.solution);
                                             }}>Dislike {"(" + props.solution.ndislikes + ")"}</Button>
@@ -783,10 +783,8 @@ function QuestionPage(props) {
         if (s.questionid == qid && s.userid != question.userid) {
             usersolutions.push(s);
         }
-        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 13) {
-            if (getRandomInt(20) < 2) {
-                aisolutions.push(s);
-            }
+        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 5) {
+            aisolutions.push(s);
         }
     }
 
@@ -956,11 +954,11 @@ function SolutionPage(props) {
                         {
                             solution.liked == 1 ?
                                 <>
-                                    <Button variant="outline-success" onClick={() => {
+                                    <Button variant="success" onClick={() => {
                                         solution.liked = 0;
                                         updateSolution(solution);
                                     }}>Like {"(" + (solution.nlikes + 1) + ")"}</Button>{' '}
-                                    <Button variant="danger" onClick={() => {
+                                    <Button variant="outline-danger" onClick={() => {
                                         solution.liked = 2;
                                         updateSolution(solution);
                                     }}>Dislike {"(" + solution.ndislikes + ")"}</Button>
@@ -970,22 +968,22 @@ function SolutionPage(props) {
                                     {
                                         solution.liked == 2 ?
                                             <>
-                                                <Button variant="success" onClick={() => {
+                                                <Button variant="outline-success" onClick={() => {
                                                     solution.liked = 1;
                                                     updateSolution(solution);
                                                 }}>Like {"(" + solution.nlikes + ")"}</Button>{' '}
-                                                <Button variant="outline-danger" onClick={() => {
+                                                <Button variant="danger" onClick={() => {
                                                     solution.liked = 0;
                                                     updateSolution(solution);
                                                 }}>Dislike {"(" + (solution.ndislikes + 1) + ")"}</Button>
                                             </>
                                             :
                                             <>
-                                                <Button variant="success" onClick={() => {
+                                                <Button variant="outline-success" onClick={() => {
                                                     solution.liked = 1;
                                                     updateSolution(solution);
                                                 }}>Like {"(" + solution.nlikes + ")"}</Button>{' '}
-                                                <Button variant="danger" onClick={() => {
+                                                <Button variant="outline-danger" onClick={() => {
                                                     solution.liked = 2;
                                                     updateSolution(solution);
                                                 }}>Dislike {"(" + solution.ndislikes + ")"}</Button>
