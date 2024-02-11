@@ -43,7 +43,8 @@ const getProjects = async () => {
                 id: project.id,
                 name: project.name,
                 description: project.description,
-                date: project.date
+                date: project.date,
+                team: project.team
             }
             return clientProject;
         })

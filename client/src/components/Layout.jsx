@@ -113,6 +113,7 @@ function ProjectCard(props) {
                     <Card.Title>{props.project.name}</Card.Title>
                     <Card.Text>{props.project.description}</Card.Text>
                     <Card.Text>{"Date: " + props.project.date}</Card.Text>
+                    <Card.Text>{"Team members: " + props.project.team}</Card.Text>
                     <Link to={`/projects/${props.project.id}`}>
                         <Button variant="primary">Details</Button>
                     </Link>
@@ -132,12 +133,14 @@ function ProjectDetailsLayout(props) {
     let name = "";
     let description = "";
     let date = "";
+    let team = "";
 
     for (let project of projects) {
         if (project.id == id) {
             name = project.name;
             description = project.description;
             date = project.date;
+            team = project.team;
         }
     }
 
@@ -164,6 +167,7 @@ function ProjectDetailsLayout(props) {
                         <h2>{name}</h2>
                         <p>{description}</p>
                         <p>{"Date: " + date}</p>
+                        <p>{"Team members: " + team}</p>
                         <Link to={"/projects/" + id + "/make-question"}>
                             <Button variant="primary">Make a question</Button>
                         </Link>
@@ -842,6 +846,7 @@ function QuestionPage(props) {
                                 <AISolutionCard key={solution.id} solution={solution} users={props.users} questions={questions} />
                             )
                         }
+                        &nbsp;
                         <h4>{"There are " + usersolutions.length + " possible solutions from other users:"}</h4>
                         {
                             usersolutions.map((solution) =>
