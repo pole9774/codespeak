@@ -787,7 +787,7 @@ function QuestionPage(props) {
         if (s.questionid == qid && s.userid != question.userid) {
             usersolutions.push(s);
         }
-        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 5) {
+        if (s.questionid != qid && s.userid != question.userid && aisolutions.length < 3) {
             aisolutions.push(s);
         }
     }
